@@ -13,7 +13,6 @@ export default function StoriesPage() {
       >
         <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>🎉 현재 진행중인 이벤트</h2>
         <ul style={{ listStyle: "disc", marginLeft: "20px" }}>
-          <li> 변경 테스트"</li>
           <li>크리스마스 특별 할인</li>
           <li>신년맞이 이벤트</li>
           <li>겨울 브랜드 스토리</li>

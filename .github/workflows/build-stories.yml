@@ -45,7 +45,7 @@ jobs:
           ASSET_PREFIX: /stories
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # ← v3에서 v4로 변경
         with:
           name: stories-app-build
           path: apps/stories-app/.next

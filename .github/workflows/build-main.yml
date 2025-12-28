@@ -45,7 +45,7 @@ jobs:
           STORIES_APP_URL: http://stories-app-service:3000
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # ← v3에서 v4로 변경
         with:
           name: main-app-build
           path: apps/main-app/.next

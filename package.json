@@ -1,0 +1,15 @@
+{
+  "name": "atiissu-multizone-test",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:packages": "npm run build --workspace=@atiissu/shared-ui --workspace=@atiissu/auth",
+    "build:main": "npm run build:packages && npm run build --workspace=main-app",
+    "build:stories": "npm run build:packages && npm run build --workspace=stories-app",
+    "dev:main": "npm run dev --workspace=main-app",
+    "dev:stories": "npm run dev --workspace=stories-app"
+  }
+}

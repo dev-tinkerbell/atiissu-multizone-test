@@ -1,0 +1,53 @@
+name: Test All Apps
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      main-changed: ${{ steps.changes.outputs.main }}
+      stories-changed: ${{ steps.changes.outputs.stories }}
+      packages-changed: ${{ steps.changes.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            main:
+              - 'apps/main-app/**'
+            stories:
+              - 'apps/stories-app/**'
+            packages:
+              - 'packages/**'
+
+  build-main:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.main-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: cd packages/shared-ui && npm ci && npm run build
+      - run: cd apps/main-app && npm ci && npm run build
+
+  build-stories:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.stories-changed == 'true' || needs.detect-changes.outputs.packages-changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: cd packages/shared-ui && npm ci && npm run build
+      - run: cd apps/stories-app && npm ci && npm run build

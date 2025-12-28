@@ -1,0 +1,51 @@
+name: Build Main App
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/main-app/**"
+      - "packages/**"
+      - ".github/workflows/build-main.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps/main-app/**"
+      - "packages/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared packages
+        run: |
+          cd packages/shared-ui
+          npm ci
+          npm run build
+
+      - name: Build Main App
+        run: |
+          cd apps/main-app
+          npm ci
+          npm run build
+        env:
+          STORIES_APP_URL: http://stories-app-service:3000
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: main-app-build
+          path: apps/main-app/.next

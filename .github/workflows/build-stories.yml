@@ -18,16 +18,17 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Build all
+      - name: Build and prepare
         run: |
           npm ci
           cd packages/shared-ui && npm ci && npm run build && cd ../..
           cd apps/stories-app && npm ci && ASSET_PREFIX=/stories npm run build && cd ../..
-
-      - name: Prepare artifact
-        run: |
+          echo "Creating upload directory..."
           mkdir -p upload
+          echo "Copying .next to upload..."
           cp -r apps/stories-app/.next upload/
+          echo "Verifying copy..."
+          ls -la upload/
 
       - uses: actions/upload-artifact@v4
         with:

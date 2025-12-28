@@ -6,57 +6,27 @@ on:
     paths:
       - "apps/main-app/**"
       - "packages/**"
-      - ".github/workflows/build-main.yml"
-  pull_request:
-    branches: [main]
-    paths:
-      - "apps/main-app/**"
-      - "packages/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
-      - name: Install root dependencies
-        run: npm ci
-
-      - name: Build shared packages
+      - name: Install and build
         run: |
-          echo "Building shared-ui..."
-          cd packages/shared-ui
           npm ci
-          npm run build
-          cd ../..
-
-          echo "Checking build output..."
-          ls -la packages/shared-ui/dist || echo "No dist folder"
-
-      - name: Build Main App
-        run: |
-          echo "Building Main App..."
-          cd apps/main-app
-          npm ci
-          npm run build
-
-          echo "Checking Next.js output..."
-          ls -la .next || echo "No .next folder"
+          cd packages/shared-ui && npm ci && npm run build && cd ../..
+          cd apps/main-app && npm ci && npm run build
         env:
           STORIES_APP_URL: http://stories-app-service:3000
 
-      - name: Upload build artifact
-        if: success()
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: main-app-build-${{ github.run_id }}
           path: apps/main-app/.next
-          if-no-files-found: error

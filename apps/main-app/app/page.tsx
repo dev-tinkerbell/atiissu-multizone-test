@@ -15,7 +15,7 @@ export default function HomePage() {
             display: "inline-block",
           }}
         >
-          스토리 보러가기 →
+          스토리 보러가기 →1
         </a>
       </div>
     </div>

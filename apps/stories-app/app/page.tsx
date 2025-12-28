@@ -11,7 +11,7 @@ export default function StoriesPage() {
           marginTop: "20px",
         }}
       >
-        <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>🎉 현재 진행중인 이벤트</h2>
+        <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>🎉 현재 진행중인 이벤트1</h2>
         <ul style={{ listStyle: "disc", marginLeft: "20px" }}>
           <li>크리스마스 특별 할인</li>
           <li>신년맞이 이벤트</li>

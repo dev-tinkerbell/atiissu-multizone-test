@@ -27,25 +27,36 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
 
       - name: Build shared packages
         run: |
+          echo "Building shared-ui..."
           cd packages/shared-ui
           npm ci
           npm run build
+          cd ../..
+
+          echo "Checking build output..."
+          ls -la packages/shared-ui/dist || echo "No dist folder"
 
       - name: Build Main App
         run: |
+          echo "Building Main App..."
           cd apps/main-app
           npm ci
           npm run build
+
+          echo "Checking Next.js output..."
+          ls -la .next || echo "No .next folder"
         env:
           STORIES_APP_URL: http://stories-app-service:3000
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4 # ← v3에서 v4로 변경
+        if: success()
+        uses: actions/upload-artifact@v4
         with:
-          name: main-app-build
+          name: main-app-build-${{ github.run_id }}
           path: apps/main-app/.next
+          if-no-files-found: error

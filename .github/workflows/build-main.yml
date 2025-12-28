@@ -37,7 +37,7 @@ jobs:
 
       - name: List build output
         run: |
-          echo "Checking build output..."
+          echo "=== Main App Build Output ==="
           ls -la apps/main-app/.next/
 
       - name: Upload artifact

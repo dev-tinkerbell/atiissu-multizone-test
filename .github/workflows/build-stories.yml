@@ -37,8 +37,14 @@ jobs:
 
       - name: List build output
         run: |
-          echo "Checking build output..."
-          ls -la apps/stories-app/.next/
+          echo "=== Current Directory (should be root) ==="
+          pwd
+          echo ""
+          echo "=== Listing from current directory ==="
+          ls -la apps/stories-app/.next/ || echo "Not found from current dir"
+          echo ""
+          echo "=== Listing with absolute path ==="
+          ls -la $GITHUB_WORKSPACE/apps/stories-app/.next/ || echo "Not found with absolute path"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

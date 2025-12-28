@@ -18,15 +18,31 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install and build
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared-ui
+        working-directory: packages/shared-ui
         run: |
           npm ci
-          cd packages/shared-ui && npm ci && npm run build && cd ../..
-          cd apps/stories-app && npm ci && npm run build
+          npm run build
+
+      - name: Build stories-app
+        working-directory: apps/stories-app
+        run: |
+          npm ci
+          npm run build
         env:
           ASSET_PREFIX: /stories
 
-      - uses: actions/upload-artifact@v4
+      - name: List build output
+        run: |
+          echo "Checking build output..."
+          ls -la apps/stories-app/.next/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: stories-app-build-${{ github.run_id }}
           path: apps/stories-app/.next
+          if-no-files-found: error

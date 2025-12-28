@@ -9,6 +9,7 @@ export function Header() {
       }}
     >
       <nav style={{ display: "flex", gap: "20px" }}>
+        공통 컴포넌트 수정 빌드 테스트
         <a href="/" style={{ color: "white" }}>
           홈
         </a>
